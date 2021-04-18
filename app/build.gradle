@@ -1,3 +1,7 @@
+// 2. 외부 네이티브 설정
+// sdk 파일 안에 face-detection의 jni 폴더를 AndroidOpencv의 app 폴더에 붙인다.
+// 아래처럼 코드를 만들면 cpp 폴더가 생긴다.
+
 apply plugin: 'com.android.application'
 
 android {

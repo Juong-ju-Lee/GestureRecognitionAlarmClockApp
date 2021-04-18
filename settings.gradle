@@ -1,4 +1,8 @@
-rootProject.name = "servicecamera"
+// 1. opencv sdk 파일을 설치
+// opencv sdk 파일 안에 androidopencv 파일 생성한다.
+// opencv 모듈을 sdk 파일에 저장한다.
+
+rootProject.name = "androidopencv"
 
 include ':app'
 

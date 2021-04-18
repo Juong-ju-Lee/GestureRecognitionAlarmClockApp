@@ -3,6 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    // 5. layout 설정
+    // sdk의 face-detection 파일 안에 res - layout - face_detect_surface_view.xml 파일를 복사한다.
+    // androidopencv 파일의 app - src - main - res -layout 안에 붙인다.
+
     <org.opencv.android.JavaCameraView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
