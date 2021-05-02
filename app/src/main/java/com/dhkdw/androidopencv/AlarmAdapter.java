@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,9 +35,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.A
         holder.alarmContent.setText(arrayList.get(position).getAlarmContent());
 
         holder.itemView.setTag(position);
-
-
-
 
 
 

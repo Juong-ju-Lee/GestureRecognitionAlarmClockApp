@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dhkdw.androidopencv">
 
-    // 3. 안드로이드 메인페스트 xml 파일을 설정
-    // activity 부분 수정 : android label, activity android name을 androidopencv로 바꾼다.
-    // supports-screens 등록 : small, normal, large 크기로 설정한다.
-    // user-permission, feature 등록 : 사용자 권한, 카메라 특징 설정한다.
+<!-- 3. 안드로이드 메인페스트 xml 파일을 설정
+ activity 부분 수정 : android label, activity android name을 androidopencv로 바꾼다.
+ supports-screens 등록 : small, normal, large 크기로 설정한다.
+ user-permission, feature 등록 : 사용자 권한, 카메라 특징 설정한다.
+
+screenOrientation="landscape" : 가로모드
+screenOrientation="Portrait" : 세로모드
+screenOrientation="fullSensor" : 기기의 senSor에 따라서 방향이 결정되는 모드
+android:configChanges="keyboardHidden|orientation"
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dhkdw.androidopencv">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_a"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_a_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".AndroidOpencv"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon"
+        >
+
+        <activity android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation">
+            android:screenOrientation="fullSensor"
+            android:launchMode="standard">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +42,7 @@
 
 
 
-//수정코드
+<!--수정코드-->
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
@@ -41,7 +53,9 @@
             android:name=".AlarmService"
             android:enabled="true"
             />
-//수정코드
+
+
+        <!--수정코드-->
 
 
 
@@ -49,7 +63,7 @@
     </application>
 
     <supports-screens android:resizeable="true"
-        android:smallScreens="true"
+        android:smallScreens="false"
         android:normalScreens="true"
         android:largeScreens="true"
         android:anyDensity="true" />

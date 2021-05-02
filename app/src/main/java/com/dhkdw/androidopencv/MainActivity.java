@@ -4,6 +4,7 @@ package com.dhkdw.androidopencv;
         import android.content.Intent;
         import android.os.Build;
         import android.os.Bundle;
+        import android.provider.MediaStore;
         import android.view.GestureDetector;
         import android.view.MotionEvent;
         import android.view.View;
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { // 레이아웃 생성, 초기화 컴포넌트를 불러온다.
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // activity_main.xml 파일을 불러온다.
 
         this.alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         this.timePicker = findViewById(R.id.timePicker);
@@ -94,9 +95,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
-            public void onLongPress(MotionEvent motionEvent) {
-                stop();
-                alarmAdapter.remove(AlarmAdapter.CustomViewHolder.position);
+            public void onLongPress(MotionEvent motionEvent) {// 리스트를 길게 눌렀을 때
+
+                // 동작인식 성공시 알람을 끄고 해당 알람 리스트 삭제
+                   // faceCapture(); // 동작인식 화면 띄우기
+
+
+                stop(); // 알람음 끄기
+                alarmAdapter.remove(AlarmAdapter.CustomViewHolder.position); // 알람목록삭제
             }
 
             @Override
@@ -172,6 +178,16 @@ public class MainActivity extends AppCompatActivity {
         alarmAdapter.notifyDataSetChanged();
     }
 
+
+
+/*
+    public void faceCapture(){
+        //얼굴인식을 위해 카메라를 켠다.
+       Intent intent = new Intent(this, AndroidOpencv.class);
+       startActivity(intent);
+    };
+*/
+
     /* 알람 중지*/
 
     private void stop() {
@@ -181,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 알람 취소
         this.alarmManager.cancel(this.pendingIntent);
+
 
         // 알람 중지 Broadcast
         Intent intent = new Intent(this, AlarmReceiver.class);
