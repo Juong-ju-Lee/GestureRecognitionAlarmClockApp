@@ -34,8 +34,8 @@ public class AlarmService extends Service {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
             Notification notification = builder.setOngoing(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setCategory(Notification.CATEGORY_SERVICE)//
+                    .setSmallIcon(R.mipmap.ic_a)
+                    //.setCategory(Notification.CATEGORY_SERVICE)//
                     .build();
 
             startForeground(1, notification);

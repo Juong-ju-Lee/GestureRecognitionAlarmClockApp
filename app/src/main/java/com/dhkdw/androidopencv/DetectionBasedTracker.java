@@ -14,11 +14,11 @@ public class DetectionBasedTracker
         mNativeObj = nativeCreateObject(cascadeName, minFaceSize);
     }
 
-    public void start() {
+    public void startM() {
         nativeStart(mNativeObj);
     }
 
-    public void stop() {
+    public void stopM() {
         nativeStop(mNativeObj);
     }
 

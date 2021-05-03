@@ -6,7 +6,7 @@
  user-permission, feature 등록 : 사용자 권한, 카메라 특징 설정한다.
 
 screenOrientation="landscape" : 가로모드
-screenOrientation="Portrait" : 세로모드
+screenOrientation="portrait" : 세로모드
 screenOrientation="fullSensor" : 기기의 senSor에 따라서 방향이 결정되는 모드
 android:configChanges="keyboardHidden|orientation"
 -->
@@ -27,8 +27,7 @@ android:configChanges="keyboardHidden|orientation"
 
         <activity android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="fullSensor"
-            android:launchMode="standard">
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +40,8 @@ android:configChanges="keyboardHidden|orientation"
 
 
 
+        <!--수정코드-->
 
-<!--수정코드-->
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
@@ -53,7 +52,6 @@ android:configChanges="keyboardHidden|orientation"
             android:name=".AlarmService"
             android:enabled="true"
             />
-
 
         <!--수정코드-->
 

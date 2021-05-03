@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                    // faceCapture(); // 동작인식 화면 띄우기
 
 
-                stop(); // 알람음 끄기
+                stopA(); // 알람음 끄기
                 alarmAdapter.remove(AlarmAdapter.CustomViewHolder.position); // 알람목록삭제
             }
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* 알람 시작 */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void start() {
+    private void startA() {
         // 시간 설정
         Calendar calendar = Calendar.getInstance();
 
@@ -170,14 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
         /*알람 리스트 생성*/
         count++;
-        // 현재시간을 받아옴
-        // long now = System.currentTimeMillis();
-        // Date mDate = new Date(now);
         AlarmList alarmList = new AlarmList(R.mipmap.ic_launcher, "알람"+count, ""+alarmDate);
         arrayList.add(alarmList);
         alarmAdapter.notifyDataSetChanged();
     }
-
 
 
 /*
@@ -190,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* 알람 중지*/
 
-    private void stop() {
+    private void stopA() {
         if (this.pendingIntent == null) {
             return;
         }
@@ -215,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btnAdd:
                     // 알람 시작
-                    start();
+                    startA();
                     break;
             }
 
