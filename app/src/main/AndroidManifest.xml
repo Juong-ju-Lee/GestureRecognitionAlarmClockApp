@@ -9,12 +9,13 @@ screenOrientation="landscape" : 가로모드
 screenOrientation="portrait" : 세로모드
 screenOrientation="fullSensor" : 기기의 senSor에 따라서 방향이 결정되는 모드
 android:configChanges="keyboardHidden|orientation"
+"android.permission.FOREGROUND_SERVICE" : 백그라운드 실행제한
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dhkdw.androidopencv">
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_a"
@@ -31,6 +32,8 @@ android:configChanges="keyboardHidden|orientation"
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

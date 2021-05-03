@@ -98,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLongPress(MotionEvent motionEvent) {// 리스트를 길게 눌렀을 때
 
                 // 동작인식 성공시 알람을 끄고 해당 알람 리스트 삭제
-                   // faceCapture(); // 동작인식 화면 띄우기
-
+                faceCapture(); // 동작인식 화면 띄우기
 
                 stopA(); // 알람음 끄기
                 alarmAdapter.remove(AlarmAdapter.CustomViewHolder.position); // 알람목록삭제
@@ -170,19 +169,19 @@ public class MainActivity extends AppCompatActivity {
 
         /*알람 리스트 생성*/
         count++;
-        AlarmList alarmList = new AlarmList(R.mipmap.ic_launcher, "알람"+count, ""+alarmDate);
+        AlarmList alarmList = new AlarmList(R.mipmap.ic_a_round, "알람"+count, ""+alarmDate);
         arrayList.add(alarmList);
         alarmAdapter.notifyDataSetChanged();
     }
 
 
-/*
+
     public void faceCapture(){
         //얼굴인식을 위해 카메라를 켠다.
        Intent intent = new Intent(this, AndroidOpencv.class);
        startActivity(intent);
     };
-*/
+
 
     /* 알람 중지*/
 

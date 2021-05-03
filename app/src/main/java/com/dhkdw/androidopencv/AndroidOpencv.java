@@ -140,7 +140,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
 
     /** Called when the activity is first created.*/
-/*
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
@@ -174,7 +174,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
-*/
+
     @Override
     protected List<? extends CameraBridgeViewBase> getCameraViewList() {
         return Collections.singletonList(mOpenCvCameraView);
