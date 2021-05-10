@@ -1,25 +1,26 @@
 package com.dhkdw.androidopencv;
-        import android.app.AlarmManager;
-        import android.app.PendingIntent;
-        import android.content.Intent;
-        import android.os.Build;
-        import android.os.Bundle;
-        import android.provider.MediaStore;
-        import android.view.GestureDetector;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.widget.TimePicker;
-        import android.widget.Toast;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-        import androidx.annotation.RequiresApi;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import java.text.SimpleDateFormat;
-        import java.util.ArrayList;
-        import java.util.Calendar;
-        import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //수정코드//수정코드//수정코드//수정코드//수정코드
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
         View view2 = findViewById(R.id.recyclerView);
 
         view2.setOnTouchListener(new View.OnTouchListener() {
@@ -120,19 +122,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-//수정코드//수정코드//수정코드//수정코드//수정코드
-
-
-
-
-
     }
-
-
-
+    //Opencv 수정코드
+    //알람 리스트 길게 눌렀을 때 동작인식
+        public void faceCapture () {
+            Intent intent = new Intent(this, AndroidOpencv.class);
+            startActivity(intent);
+        }
 
     /* 알람 시작 */
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -173,15 +169,6 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(alarmList);
         alarmAdapter.notifyDataSetChanged();
     }
-
-
-
-    public void faceCapture(){
-        //얼굴인식을 위해 카메라를 켠다.
-       Intent intent = new Intent(this, AndroidOpencv.class);
-       startActivity(intent);
-    };
-
 
     /* 알람 중지*/
 

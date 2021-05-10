@@ -56,11 +56,13 @@ android:configChanges="keyboardHidden|orientation"
             android:enabled="true"
             />
 
-        <!--수정코드-->
+        <!--Opencv 수정코드-->
+        <!--호출되는 AndroidOpencv (서브)-->
+        <!--가로전환 (화면고정)-->
 
-
-
-
+        <activity android:name="AndroidOpencv"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="landscape"></activity>
     </application>
 
     <supports-screens android:resizeable="true"
