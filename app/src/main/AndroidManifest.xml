@@ -15,6 +15,7 @@ android:configChanges="keyboardHidden|orientation"
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dhkdw.androidopencv">
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
@@ -44,6 +45,7 @@ android:configChanges="keyboardHidden|orientation"
 
 
         <!--수정코드-->
+
 
         <receiver
             android:name=".AlarmReceiver"

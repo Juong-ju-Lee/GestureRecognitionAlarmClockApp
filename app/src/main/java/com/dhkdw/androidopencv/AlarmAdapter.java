@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
+
 
 public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.AlarmAdapter.CustomViewHolder> {
 
@@ -29,18 +29,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.A
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.dhkdw.androidopencv.AlarmAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final com.dhkdw.androidopencv.AlarmAdapter.CustomViewHolder holder, int position) {
         holder.alarmImg.setImageResource(arrayList.get(position).getAlarmImg());
         holder.alarmName.setText(arrayList.get(position).getAlarmName());
         holder.alarmContent.setText(arrayList.get(position).getAlarmContent());
 
         holder.itemView.setTag(position);
-
-
-
-
-
-        /*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +51,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.A
                 return true;
             }
         });
-*/
+
 
 
     }
@@ -80,8 +74,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.A
             }
         }
 
-    public static class CustomViewHolder extends RecyclerView.ViewHolder {
-        public static int position;
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
         protected ImageView alarmImg;
         protected TextView alarmName;
         protected TextView alarmContent;

@@ -2,6 +2,7 @@ package com.dhkdw.androidopencv;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Build;
@@ -26,8 +27,9 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     //수정코드//수정코드//수정코드//수정코드//수정코드
     GestureDetector detector;
-    //수정코드//수정코드//수정코드//수정코드//수정코드
 
+    private AudioManager audio;
+    //수정코드//수정코드//수정코드//수정코드//수정코드
 
 
     private ArrayList<AlarmList> arrayList;
@@ -52,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         this.timePicker = findViewById(R.id.timePicker);
 
         findViewById(R.id.btnAdd).setOnClickListener(mClickListener);
+
+        //수정:볼륨조절
+        audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC); // 볼륨 키를 누를 때 기본 값으로 미디어 음량으로 조절하게 한다.
+        audio.setStreamVolume(AudioManager.STREAM_RING, audio.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
 
 
         /*알람 리스트 생성*/
@@ -101,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // 동작인식 성공시 알람을 끄고 해당 알람 리스트 삭제
                 faceCapture(); // 동작인식 화면 띄우기
-
                 stopA(); // 알람음 끄기
-                alarmAdapter.remove(AlarmAdapter.CustomViewHolder.position); // 알람목록삭제
             }
 
             @Override
@@ -128,31 +135,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     //수정코드//수정코드//수정코드//수정코드//수정코드//수정코드 볼륨조절
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        AudioManager mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+    public boolean onKeyDown(int keyCode, KeyEvent event) { // 볼륨 키를 눌러도 소리를 최대로 출력하도록 함
         switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP :
+            case KeyEvent.KEYCODE_VOLUME_UP : // 볼륨 업
 
-                mAudioManager.setStreamVolume(AudioManager.STREAM_RING,
-                        (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 0.99),
-                        AudioManager.FLAG_PLAY_SOUND);
-// * 0.99 이 부분의 숫자에 맞춰 볼륨이 바뀝니다. (*0.25 이면 25%의 볼륨)
+            case KeyEvent.KEYCODE_VOLUME_DOWN: // 볼륨다운
+                // 첫번째 인자는 벨소리 음악소리등의 타입, 두번째 인자는 볼륨의 크기, 세번째인자는 플래그(변경후 UI or 소리출력)
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
                 return true;
-
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-
-                // 볼륨다운
-                mAudioManager.setStreamVolume(AudioManager.STREAM_RING,
-                        (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 0.90),
-                        AudioManager.FLAG_PLAY_SOUND);
-                return true;
-
 
             case KeyEvent.KEYCODE_BACK:
                 return true;
         }
         return false;
     }
+
 
 //수정코드//수정코드//수정코드//수정코드//수정코드//수정코드
 
