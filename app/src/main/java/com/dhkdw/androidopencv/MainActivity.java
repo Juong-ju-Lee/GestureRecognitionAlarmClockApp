@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 mAudioManager.setStreamVolume(AudioManager.STREAM_RING,
                         (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 0.99),
                         AudioManager.FLAG_PLAY_SOUND);
-// * 1 이 부분의 숫자에 맞춰 볼륨이 바뀝니다. (*0.25 이면 25%의 볼륨)
+// * 0.99 이 부분의 숫자에 맞춰 볼륨이 바뀝니다. (*0.25 이면 25%의 볼륨)
                 return true;
 
             case KeyEvent.KEYCODE_VOLUME_DOWN:

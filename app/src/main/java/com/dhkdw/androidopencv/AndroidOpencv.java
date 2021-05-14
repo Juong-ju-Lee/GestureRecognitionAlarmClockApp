@@ -3,6 +3,9 @@
 // androidopencv - app - src - main - java 순으로 들어가 붙여넣는다.
 // 패키지명 수정한다.
 // cascade file 추가한다.
+// 참고 사이트
+//https://siadaddy-cordinglife.tistory.com/12
+
 
 package com.dhkdw.androidopencv;
 
