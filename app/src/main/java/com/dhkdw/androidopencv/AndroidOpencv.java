@@ -5,6 +5,7 @@
 // cascade file 추가한다.
 // 참고 사이트
 //https://siadaddy-cordinglife.tistory.com/12
+//https://www.charlezz.com/?p=834
 
 
 package com.dhkdw.androidopencv;
@@ -181,6 +182,17 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
+
+
+    //추가된 코드
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG,"onStop");
+        //액티비티가 더 이상 화면에 나타나지 않음,중단된 상태
+    }
+    //추가된 코드
+
 
     @Override
     protected List<? extends CameraBridgeViewBase> getCameraViewList() {
