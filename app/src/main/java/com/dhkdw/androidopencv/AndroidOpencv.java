@@ -288,10 +288,10 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
             if (type == NATIVE_DETECTOR) {
                 Log.i(TAG, "Detection Based Tracker enabled");
-                mNativeDetector.startM();
+                mNativeDetector.start();
             } else {
                 Log.i(TAG, "Cascade detector enabled");
-                mNativeDetector.stopM();
+                mNativeDetector.stop();
             }
         }
     }

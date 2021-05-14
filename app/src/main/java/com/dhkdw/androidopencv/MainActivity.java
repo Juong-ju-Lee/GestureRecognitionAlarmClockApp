@@ -1,19 +1,24 @@
 package com.dhkdw.androidopencv;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,19 +31,16 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //수정코드//수정코드//수정코드//수정코드//수정코드
-    GestureDetector detector;
     private AudioManager audio;
+    private Calendar calendar;
     //수정코드//수정코드//수정코드//수정코드//수정코드
-
 
     private ArrayList<AlarmList> arrayList;
     private AlarmAdapter alarmAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
-
     int count =0;
-
 
     private AlarmManager alarmManager;
     private TimePicker timePicker;
@@ -51,8 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
         this.alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         this.timePicker = findViewById(R.id.timePicker);
+        this.calendar=Calendar.getInstance();
+        // 현재 날짜 표시
+        displayDate();
 
         findViewById(R.id.btnAdd).setOnClickListener(mClickListener);
+        findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
 
         //수정:볼륨조절
         audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -63,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*알람 리스트 생성*/
-
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -73,64 +78,27 @@ public class MainActivity extends AppCompatActivity {
         alarmAdapter = new AlarmAdapter(arrayList);
         recyclerView.setAdapter(alarmAdapter);
 
-
-
-
-
-
-
-
-
-//수정코드//수정코드//수정코드//수정코드//수정코드//수정코드
-
-        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-
-            @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public void onShowPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return false;
-            }
-
-            public void onLongPress(MotionEvent motionEvent) {// 리스트를 길게 눌렀을 때
-
-                // 동작인식 성공시 알람을 끄고 해당 알람 리스트 삭제
-                faceCapture(); // 동작인식 화면 띄우기
-                stopA(); // 알람음 끄기
-            }
-
-            @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return false;
-            }
-
-        });
-
-
-        View view2 = findViewById(R.id.recyclerView);
-
-        view2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent motionEvent) {
-                detector.onTouchEvent(motionEvent);
-                return true;
-            }
-        });
     }
 
+// 날짜표시
+    private void displayDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        ((TextView) findViewById(R.id.txtDate)).setText(format.format(this.calendar.getTime()));
+    }
+
+    private void showDatePicker(){
+        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener(){
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth){
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DATE,dayOfMonth);
+                // 날짜표시
+                displayDate();
+            }
+        }, this.calendar.get(Calendar.YEAR),this.calendar.get(Calendar.MONTH),this.calendar.get(Calendar.DAY_OF_MONTH));
+
+        dialog.show();
+    }
 
 
     //수정코드//수정코드//수정코드//수정코드//수정코드//수정코드 볼륨조절
@@ -149,29 +117,9 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
-//수정코드//수정코드//수정코드//수정코드//수정코드//수정코드
-
-/* 볼륨조절
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        AudioManager mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP :
-                mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-                return true;
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-                return true;
-            case KeyEvent.KEYCODE_BACK:
-                return true;
-        }
-        return false;
-    }
-*/
-
     //Opencv 수정코드
     //알람 리스트 길게 눌렀을 때 동작인식
-        public void faceCapture () {
+public void faceCapture() {
             Intent intent = new Intent(this, AndroidOpencv.class);
             startActivity(intent);
         }
@@ -179,17 +127,15 @@ public class MainActivity extends AppCompatActivity {
     /* 알람 시작 */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startA() {
-        // 시간 설정
-        Calendar calendar = Calendar.getInstance();
+        // 알람 시간 설정
+        this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
+        this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
+        this.calendar.set(Calendar.SECOND, 0);
 
-        calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
-        calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
-        calendar.set(Calendar.SECOND, 0);
-
-        // 현재시간보다 이전이면
-        if (calendar.before(Calendar.getInstance())) {
-            // 다음날로 설정
-            calendar.add(Calendar.DATE, 1);
+        // 현재일보다 이전이면 등록 실패
+        if (this.calendar.before(Calendar.getInstance())) {
+            Toast.makeText(this, "알람시간이 현재시간보다 이전일 수 없습니다.", Toast.LENGTH_LONG).show();
+            return;
         }
 
         // Receiver 설정
@@ -204,10 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Toast.makeText(this, "Alarm : " + format.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
         String alarmDate =format.format(calendar.getTime());
-
-
+        Toast.makeText(this, "Alarm : " + alarmDate, Toast.LENGTH_LONG).show();
 
         /*알람 리스트 생성*/
         count++;
@@ -217,15 +161,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* 알람 중지*/
-
-    private void stopA() {
+    public void stopA() {
         if (this.pendingIntent == null) {
             return;
         }
 
         // 알람 취소
         this.alarmManager.cancel(this.pendingIntent);
-
 
         // 알람 중지 Broadcast
         Intent intent = new Intent(this, AlarmReceiver.class);
@@ -241,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.btnCalendar:
+                    // 달력
+                    showDatePicker();
+                    break;
+
                 case R.id.btnAdd:
                     // 알람 시작
                     startA();
@@ -251,5 +198,80 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
+        protected ImageView alarmImg;
+        protected TextView alarmName;
+        protected TextView alarmContent;
+
+        public CustomViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.alarmImg=(ImageView) itemView.findViewById(R.id.alarmImg);
+            this.alarmName=(TextView) itemView.findViewById(R.id.alarmName);
+            this.alarmContent=(TextView) itemView.findViewById(R.id.alarmContent);
+        }
+    }
+
+
+    public class AlarmAdapter extends RecyclerView.Adapter<com.dhkdw.androidopencv.MainActivity.CustomViewHolder>{
+        private ArrayList<AlarmList> arrayList;
+
+        public AlarmAdapter(ArrayList<AlarmList> arrayList){
+            this.arrayList=arrayList;
+        }
+
+        @NonNull
+        @Override
+        public com.dhkdw.androidopencv.MainActivity.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
+            CustomViewHolder holder = new CustomViewHolder(view);
+            return holder;
+        }
+
+
+        @Override
+        public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
+            holder.alarmImg.setImageResource(arrayList.get(position).getAlarmImg());
+            holder.alarmName.setText(arrayList.get(position).getAlarmName());
+            holder.alarmContent.setText(arrayList.get(position).getAlarmContent());
+            holder.itemView.setTag(position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String curName = holder.alarmName.getText().toString();
+                    Toast.makeText(v.getContext(),curName, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    stopA();
+                    faceCapture(); // 동작인식 화면 띄우기
+                    remove(holder.getAdapterPosition());
+                    return true;
+                }
+            });
+        }
+
+
+
+        @Override
+        public int getItemCount() {
+            return (null != arrayList ? arrayList.size() :0);
+        }
+
+
+        public void remove(int position){
+            try{
+                arrayList.remove(position);
+                notifyItemRemoved(position);
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 
 }

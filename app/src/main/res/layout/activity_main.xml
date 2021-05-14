@@ -13,8 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            />
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/btnCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="달력" />
 
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
