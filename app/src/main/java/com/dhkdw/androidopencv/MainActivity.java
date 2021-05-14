@@ -27,7 +27,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     //수정코드//수정코드//수정코드//수정코드//수정코드
     GestureDetector detector;
-
     private AudioManager audio;
     //수정코드//수정코드//수정코드//수정코드//수정코드
 
