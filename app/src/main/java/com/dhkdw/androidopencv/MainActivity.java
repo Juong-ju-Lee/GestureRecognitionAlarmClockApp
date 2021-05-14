@@ -1,14 +1,15 @@
 package com.dhkdw.androidopencv;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -123,6 +124,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+    //수정코드//수정코드//수정코드//수정코드//수정코드//수정코드 볼륨조절
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AudioManager mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP :
+
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING,
+                        (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 0.99),
+                        AudioManager.FLAG_PLAY_SOUND);
+// * 1 이 부분의 숫자에 맞춰 볼륨이 바뀝니다. (*0.25 이면 25%의 볼륨)
+                return true;
+
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+
+                // 볼륨다운
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING,
+                        (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 0.90),
+                        AudioManager.FLAG_PLAY_SOUND);
+                return true;
+
+
+            case KeyEvent.KEYCODE_BACK:
+                return true;
+        }
+        return false;
+    }
+
+//수정코드//수정코드//수정코드//수정코드//수정코드//수정코드
+
+/* 볼륨조절
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AudioManager mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP :
+                mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                return true;
+        }
+        return false;
+    }
+*/
+
     //Opencv 수정코드
     //알람 리스트 길게 눌렀을 때 동작인식
         public void faceCapture () {
