@@ -34,6 +34,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,12 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 public class AndroidOpencv extends CameraActivity implements CvCameraViewListener2 {
+    long start = SystemClock.elapsedRealtime(); // 시작시간
+    long result=0;
     JavaCameraView mCameraView;
+
+
+
     private static final String TAG = "OCVSample::Activity";
     private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
     public static final int JAVA_DETECTOR = 0;
@@ -237,13 +243,19 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
 
 
-        // 수정코드
-        if(facesArray.length>0) { // 얼굴 인식
-            textView.setText("인식중..");
-            // 10초 뒤 종료할 것
-            onStop();
-        }
+            // 수정코드
+            if (facesArray.length > 0) { // 얼굴 인식
+                textView.setText("인식중..");
+                // 10초 뒤 종료할 것
+                result += 1;
+                if (result >= 10000) {
+                        onStop();
+                    }
 
+            } else {
+                result=0; // 시작시간 재 측정
+                textView.setText("10초간 눈을 크게 뜨고 정면을 응시해 주십시오.");
+            }
 
         return mRgba;
     }
