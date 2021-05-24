@@ -248,7 +248,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
                 textView.setText("인식중..");
                 // 10초 뒤 종료할 것
                 result += 1;
-                if (result >= 10000) {
+                if (result >= 200) {
                         onStop();
                     }
 
