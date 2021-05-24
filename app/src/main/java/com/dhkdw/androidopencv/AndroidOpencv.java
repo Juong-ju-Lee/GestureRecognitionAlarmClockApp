@@ -7,14 +7,12 @@
 //https://siadaddy-cordinglife.tistory.com/12
 //https://www.charlezz.com/?p=834
 
-
 package com.dhkdw.androidopencv;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.List;
 import org.opencv.android.BaseLoaderCallback;
@@ -41,7 +39,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AndroidOpencv extends CameraActivity implements CvCameraViewListener2 {
     JavaCameraView mCameraView;
@@ -301,17 +298,12 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     }
 
     //Opencv 수정코드
-    //recycleView 알람 리스트 통해 동작 인식 연결
-    @SuppressLint("ResourceType")
-    public void onCreate() {
-        setContentView(R.id.recyclerView);
-    }
-
-    //Opencv 수정코드
     //화면 가로 전환
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) ;
     }
+
+
 }

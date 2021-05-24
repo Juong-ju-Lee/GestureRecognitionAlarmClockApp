@@ -20,7 +20,7 @@
         android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
-        android:text="10초간 정면을 응시해 주십시오." />
+        android:text="10초간 눈을 크게 뜨고 정면을 응시해 주십시오." />
 
 
         <org.opencv.android.JavaCameraView
