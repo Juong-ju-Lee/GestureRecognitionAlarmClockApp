@@ -14,16 +14,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.List;
-
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -33,32 +32,19 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.imgproc.Imgproc;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.Surface;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class AndroidOpencv extends CameraActivity implements CvCameraViewListener2 {
-
+    JavaCameraView mCameraView;
     private static final String TAG = "OCVSample::Activity";
     private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
     public static final int JAVA_DETECTOR = 0;
@@ -77,14 +63,15 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     private DetectionBasedTracker mNativeDetector;
 
     private int mDetectorType = JAVA_DETECTOR;
-    private String[] mDetectorName;
+    private final String[] mDetectorName;
 
     private float mRelativeFaceSize = 0.2f;
     private int mAbsoluteFaceSize = 0;
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
@@ -150,16 +137,20 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     /**
      * Called when the activity is first created.
      */
-
+    TextView textView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // 화면 계속 켜짐
 
         setContentView(R.layout.face_detect_surface_view);
 
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
+        // 수정코드
+       textView = (TextView)findViewById(R.id.textView);
+        // 수정코드
+
+        mOpenCvCameraView = findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
@@ -190,6 +181,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         super.onStop();
         Log.e(TAG,"onStop");
         //액티비티가 더 이상 화면에 나타나지 않음,중단된 상태
+        finish();
     }
     //추가된 코드
 
@@ -204,17 +196,18 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         mOpenCvCameraView.disableView();
     }
 
-    public void onCameraViewStarted(int width, int height) {
+    public void onCameraViewStarted(int width, int height) { // 카메라 프리뷰가 시작되면 호출된다.
+       //  mCameraView.setCameraIndex(1); // 전면카메라
         mGray = new Mat();
         mRgba = new Mat();
     }
 
-    public void onCameraViewStopped() {
+    public void onCameraViewStopped() { // 카메라 프리뷰가 멈추면 호출된다.
         mGray.release();
         mRgba.release();
     }
 
-    public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+    public Mat onCameraFrame(CvCameraViewFrame inputFrame) { // 프레임 전달이 필요한 경우에 호출된다.
 
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
@@ -233,6 +226,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             if (mJavaDetector != null)
                 mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
                         new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+
         } else if (mDetectorType == NATIVE_DETECTOR) {
             if (mNativeDetector != null)
                 mNativeDetector.detect(mGray, faces);
@@ -243,6 +237,16 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
             Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+
+
+
+        // 수정코드
+        if(facesArray.length>0) { // 얼굴 인식
+            textView.setText("인식중..");
+            // 10초 뒤 종료할 것
+            onStop();
+        }
+
 
         return mRgba;
     }
@@ -301,10 +305,6 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     @SuppressLint("ResourceType")
     public void onCreate() {
         setContentView(R.id.recyclerView);
-    }
-
-    public void faceCapture() {
-        finish();
     }
 
     //Opencv 수정코드
