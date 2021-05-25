@@ -56,7 +56,6 @@ public class AlarmService extends Service {
             Log.d("AlarmService", "Alarm Start");
         } else if (this.isRunning & state.equals("off")) {
             // 알람음 재생 ON, 알람음 중지 상태
-
             //알람음 반복재생중지.
             //this.mediaPlayer.setLooping(false);
 
@@ -64,11 +63,9 @@ public class AlarmService extends Service {
             this.mediaPlayer.stop();
             this.mediaPlayer.reset();
             this.mediaPlayer.release();
-
             this.isRunning = false;
 
             Log.d("AlarmService", "Alarm Stop");
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 stopForeground(true);
             }

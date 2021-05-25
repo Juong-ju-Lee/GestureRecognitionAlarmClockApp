@@ -9,44 +9,48 @@
 
 package com.dhkdw.androidopencv;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.media.AudioManager;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.TextView;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraActivity;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+import org.opencv.android.JavaCameraView;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraActivity;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.android.JavaCameraView;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.imgproc.Imgproc;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 public class AndroidOpencv extends CameraActivity implements CvCameraViewListener2 {
     long start = SystemClock.elapsedRealtime(); // 시작시간
     long result=0;
     JavaCameraView mCameraView;
     MainActivity mainActivity;
-
+    private AudioManager audio;
 
 
     private static final String TAG = "OCVSample::Activity";
@@ -147,17 +151,45 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // 화면 계속 켜짐
-
         setContentView(R.layout.face_detect_surface_view);
-
-        // 수정코드
-       textView = (TextView)findViewById(R.id.textView);
-        // 수정코드
-
         mOpenCvCameraView = findViewById(R.id.fd_activity_surface_view);
-        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+
+
+
+        // 수정코드
+        //수정:볼륨조절
+        audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC); // 볼륨 키를 누를 때 기본 값으로 미디어 음량으로 조절하게 한다.
+        audio.setStreamVolume(AudioManager.STREAM_RING, audio.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
+
+
+       textView = (TextView)findViewById(R.id.textView);
+        mOpenCvCameraView.disableView();
+        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT); // 전면카메라 사용
+        // 수정코드
+
+        //mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) { // 볼륨 키를 눌러도 소리를 최대로 출력하도록 함
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP : // 볼륨 업
+
+            case KeyEvent.KEYCODE_VOLUME_DOWN: // 볼륨다운
+                // 첫번째 인자는 벨소리 음악소리등의 타입, 두번째 인자는 볼륨의 크기, 세번째인자는 플래그(변경후 UI or 소리출력)
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_SHOW_UI); // 음량을 최대로 설정
+                return true;
+
+            case KeyEvent.KEYCODE_BACK:
+                return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void onPause() {
@@ -201,7 +233,6 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     }
 
     public void onCameraViewStarted(int width, int height) { // 카메라 프리뷰가 시작되면 호출된다.
-       //  mCameraView.setCameraIndex(1); // 전면카메라
         mGray = new Mat();
         mRgba = new Mat();
     }
@@ -215,6 +246,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
+       Core.flip(mRgba, mRgba, 1); // 카메라 좌우반전
 
         if (mAbsoluteFaceSize == 0) {
             int height = mGray.rows();
@@ -247,7 +279,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             // 수정코드
             if (facesArray.length > 0) { // 얼굴 인식
                 textView.setText("인식중..");
-                // 10초 뒤 종료할 것
+                // 개선사항 : 10초 뒤 종료할 것
                 result += 1;
                 if (result >= 200) {
                     mainActivity.stopA(); // 알람끄기

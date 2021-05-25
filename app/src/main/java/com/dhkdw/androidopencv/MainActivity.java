@@ -28,9 +28,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
+// 810호 최종발표, 최종보고서 양식상관없이 작성
+// 별도 보고서도 제출, 공지사항 참조
+// 1시 10분까지 수업
+// 졸업작품 제출은 소스코드 보고서 회의록 참고자료 등등 usb, CD 등 제출일자까지 졸업사정함
 public class MainActivity extends AppCompatActivity {
+
     //수정코드//수정코드//수정코드//수정코드//수정코드
+
+    PendingIntent[] values;
     private AudioManager audio;
     private Calendar calendar;
     //수정코드//수정코드//수정코드//수정코드//수정코드
@@ -127,6 +133,8 @@ public void faceCapture() {
     /* 알람 시작 */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startA() {
+
+
         // 알람 시간 설정
         this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
         this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
@@ -143,10 +151,18 @@ public void faceCapture() {
         // state 값이 on 이면 알람시작, off 이면 중지
         intent.putExtra("state", "on");
 
-        this.pendingIntent = PendingIntent.getBroadcast(this, 20, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // this.pendingIntent = PendingIntent.getBroadcast(this, 20, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        this.pendingIntent= PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT); // 수정
+        values[count]=this.pendingIntent;
+        //참고 사이트 : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=k4j1j7&logNo=220330252535
+        // https://tapito.tistory.com/465
+        // https://blog.naver.com/horajjan/220319888077
+
 
         // 알람 설정
-        this.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//          this.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        this.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),values[count]);
 
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -179,6 +195,7 @@ public void faceCapture() {
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
+
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onClick(View v) {
