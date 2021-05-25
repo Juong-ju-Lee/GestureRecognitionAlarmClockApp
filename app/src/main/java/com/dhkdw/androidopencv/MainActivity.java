@@ -246,9 +246,8 @@ public void faceCapture() {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    stopA();
                     faceCapture(); // 동작인식 화면 띄우기
-                    remove(holder.getAdapterPosition());
+                    remove(holder.getAdapterPosition()); // 알람목록삭제
                     return true;
                 }
             });

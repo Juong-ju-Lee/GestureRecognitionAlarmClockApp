@@ -45,6 +45,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     long start = SystemClock.elapsedRealtime(); // 시작시간
     long result=0;
     JavaCameraView mCameraView;
+    MainActivity mainActivity;
 
 
 
@@ -249,7 +250,8 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
                 // 10초 뒤 종료할 것
                 result += 1;
                 if (result >= 200) {
-                        onStop();
+                    mainActivity.stopA(); // 알람끄기
+                    onStop(); // 눈 인식 창 닫기
                     }
 
             } else {
