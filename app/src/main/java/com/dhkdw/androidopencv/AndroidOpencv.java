@@ -1,6 +1,7 @@
 package com.dhkdw.androidopencv;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Bundle;
