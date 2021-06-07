@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
