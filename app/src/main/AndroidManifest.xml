@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 3. 안드로이드 메인페스트 xml 파일을 설정
- activity 부분 수정 : android label, activity android name을 androidopencv로 바꾼다.
- supports-screens 등록 : small, normal, large 크기로 설정한다.
- user-permission, feature 등록 : 사용자 권한, 카메라 특징 설정한다.
-
-screenOrientation="landscape" : 가로모드
-screenOrientation="portrait" : 세로모드
-screenOrientation="fullSensor" : 기기의 senSor에 따라서 방향이 결정되는 모드
-android:configChanges="keyboardHidden|orientation"
-"android.permission.FOREGROUND_SERVICE" : 백그라운드 실행제한
--->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dhkdw.androidopencv">
@@ -39,13 +26,6 @@ android:configChanges="keyboardHidden|orientation"
             </intent-filter>
         </activity>
 
-
-
-
-
-        <!--수정코드-->
-
-
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
@@ -57,13 +37,10 @@ android:configChanges="keyboardHidden|orientation"
             android:enabled="true"
             />
 
-        <!--Opencv 수정코드-->
-        <!--호출되는 AndroidOpencv (서브)-->
-        <!--가로전환 (화면고정)-->
-
         <activity android:name="AndroidOpencv"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
     <supports-screens android:resizeable="true"

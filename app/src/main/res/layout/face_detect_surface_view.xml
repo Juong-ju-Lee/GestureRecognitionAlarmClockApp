@@ -2,12 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-<!--
-    5. layout 설정
-    sdk의 face-detection 파일 안에 res - layout - face_detect_surface_view.xml 파일를 복사한다.
-    androidopencv 파일의 app - src - main - res -layout 안에 붙인다.
- -->
-
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,19 +16,11 @@
         android:layout_height="20dp"
         android:text="10초간 눈을 크게 뜨고 정면을 응시해 주십시오." />
 
-
         <org.opencv.android.JavaCameraView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/fd_activity_surface_view" />
 
     </LinearLayout>
-
-
-
-
-
-
-
 
 </LinearLayout>

@@ -1,8 +1,3 @@
-// 6. JNI 소스 수정
-// JNI : 자바가 다른 언어로 만들어진 어플리케이션과 상호 작용할 수 있는 인터페이스라 한다.
-// Edit - find - replace in path(환경변수) 에 들어가서 org_opencv_samples_facedetect, com.dhkdw.androidopencv를 각각 넣는다.
-// Replace All을 누르면 수정이 된다.
-
 package com.dhkdw.androidopencv;
 
 import org.opencv.core.Mat;

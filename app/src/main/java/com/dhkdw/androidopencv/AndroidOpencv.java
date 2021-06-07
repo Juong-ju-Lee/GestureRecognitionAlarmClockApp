@@ -1,12 +1,3 @@
-// 4. AndroidOpencv.java 생성
-// sdk 파일 안에 face-detection의 FdActivity.java 파일과 DetectionBasedTracker.java 파일 복사한다.
-// androidopencv - app - src - main - java 순으로 들어가 붙여넣는다.
-// 패키지명 수정한다.
-// cascade file 추가한다.
-// 참고 사이트
-//https://siadaddy-cordinglife.tistory.com/12
-//https://www.charlezz.com/?p=834
-
 package com.dhkdw.androidopencv;
 
 import android.content.Context;
