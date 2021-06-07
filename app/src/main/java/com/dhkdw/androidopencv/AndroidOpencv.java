@@ -144,7 +144,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
 
 
-       textView = (TextView)findViewById(R.id.textView);
+        textView = (TextView)findViewById(R.id.textView);
         mOpenCvCameraView.disableView();
         mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT); // 전면카메라 사용
         mOpenCvCameraView.setCvCameraViewListener(this);
@@ -214,7 +214,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
-       Core.flip(mRgba, mRgba, 1); // 카메라 좌우반전
+        Core.flip(mRgba, mRgba, 1); // 카메라 좌우반전
 
         if (mAbsoluteFaceSize == 0) {
             int height = mGray.rows();
@@ -243,18 +243,18 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
 
 
-            if (facesArray.length > 0) { // 얼굴 인식
-                textView.setText("인식중..");
-                result += 1;
-                if (result >= 200) {
-                    mainActivity.stopA(); // 알람끄기
-                    onStop(); // 눈 인식 창 닫기
-                    }
-
-            } else {
-                result=0; // 시작시간 재 측정
-                textView.setText("10초간 눈을 크게 뜨고 정면을 응시해 주십시오.");
+        if (facesArray.length > 0) { // 얼굴 인식
+            textView.setText("인식중..");
+            result += 1;
+            if (result >= 200) {
+                mainActivity.stopA(); // 알람끄기
+                onStop(); // 눈 인식 창 닫기
             }
+
+        } else {
+            result=0; // 재 측정
+            textView.setText("10초간 눈을 크게 뜨고 정면을 응시해 주십시오.");
+        }
 
         return mRgba;
     }

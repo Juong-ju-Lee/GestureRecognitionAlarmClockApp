@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     private AudioManager audio;
     private Calendar calendar;
@@ -89,11 +90,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
     /* 알람 시작 */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startA() {
         // 알람 시간 설정
-        this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
-        this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
+        }
         this.calendar.set(Calendar.SECOND, 0);
 
         // 현재일보다 이전이면 등록 실패
