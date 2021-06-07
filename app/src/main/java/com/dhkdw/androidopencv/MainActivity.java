@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         // state 값이 on 이면 알람시작, off 이면 중지
         intent.putExtra("state", "on");
-        this.pendingIntent = PendingIntent.getBroadcast(this, 20, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        this.pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 알람 설정
         this.alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
