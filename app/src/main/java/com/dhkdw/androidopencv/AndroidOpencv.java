@@ -250,7 +250,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
 
         } else {
             result=0; // 재 측정
-            textView.setText("10초간 눈을 크게 뜨고 정면을 응시해 주십시오.");
+            textView.setText("눈을 크게 뜨고 정면을 응시해 주십시오.");
         }
 
         return mRgba;
