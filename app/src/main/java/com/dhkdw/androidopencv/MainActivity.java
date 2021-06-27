@@ -22,7 +22,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     boolean f = false;
-    public Thread mediaPlayer;
     private AudioManager audio;
     private Calendar calendar;
     private AlarmManager alarmManager;
