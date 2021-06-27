@@ -1,6 +1,9 @@
 package com.dhkdw.androidopencv;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -113,6 +116,10 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         }
     };
 
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
+    private AlarmService alarmService;
+
     public AndroidOpencv() {
         mDetectorName = new String[2];
         mDetectorName[JAVA_DETECTOR] = "Java";
@@ -146,7 +153,6 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT); // 전면카메라 사용
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
-
 
     public boolean onKeyDown(int keyCode, KeyEvent event) { // 볼륨 키를 눌러도 소리를 최대로 출력하도록 함
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
@@ -244,7 +250,11 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             textView.setText("인식중..");
             result += 1;
             if (result >= 200) {
-                mainActivity.stopA(); // 알람끄기
+                // mainActivity.stopA(); // 알람끄기 (error)
+                 mainActivity.f=true;
+               // Intent stop = new Intent(this, MainActivity.class);
+                //stop.putExtra("keyword", "true");
+              //  startActivity(stop);
                 onStop(); // 눈 인식 창 닫기
             }
 

@@ -21,6 +21,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    boolean f = false;
+    public Thread mediaPlayer;
     private AudioManager audio;
     private Calendar calendar;
     private AlarmManager alarmManager;
@@ -48,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC); // 볼륨 키를 누를 때 기본 값으로 미디어 음량으로 조절하게 한다.
         audio.setStreamVolume(AudioManager.STREAM_RING, audio.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+       // String getString = getIntent().getStringExtra("keyword");
+        if (f){
+            stopA();
+        }
     }
 
     // 날짜표시
@@ -120,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Alarm : " + alarmDate, Toast.LENGTH_LONG).show();
     }
 
-    /* 알람 중지*/
+    /* 알람 중지 */
     public void stopA() {
         if (this.pendingIntent == null) {
             return;

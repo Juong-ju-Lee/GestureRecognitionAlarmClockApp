@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
     private boolean isRunning;
+    private MainActivity mainActivity;
 
     @Nullable
     @Override
@@ -32,7 +33,7 @@ public class AlarmService extends Service {
             // Oreo(26) 버전 이후 버전부터는 channel 이 필요함
             String channelId =  createNotificationChannel();
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId); //알림건축가 객체 생성
             Notification notification = builder.setOngoing(true)
                     .setSmallIcon(R.mipmap.ic_a)
                     //.setCategory(Notification.CATEGORY_SERVICE)//

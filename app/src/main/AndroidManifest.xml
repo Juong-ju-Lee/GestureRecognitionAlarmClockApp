@@ -41,6 +41,7 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="landscape">
         </activity>
+
     </application>
 
     <supports-screens android:resizeable="true"
