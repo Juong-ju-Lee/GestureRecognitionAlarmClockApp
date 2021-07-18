@@ -287,7 +287,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
                 Intent stop = new Intent(this, MainActivity.class);
                 stop.putExtra("알람끄기", true);
                 startActivity(stop);
-              //  onStop(); // 눈 인식 창 닫기
+                // onStop(); // 눈 인식 창 닫기
             }
 
         } else {
