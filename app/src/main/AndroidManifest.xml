@@ -4,14 +4,33 @@
     package="com.dhkdw.androidopencv">
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <supports-screens android:resizeable="true"
+        android:smallScreens="false"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:anyDensity="true" />
+
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
+
+
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_a"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_a_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon"
+        android:usesCleartextTraffic="true"
         >
 
         <activity android:name=".MainActivity"
@@ -44,16 +63,5 @@
 
     </application>
 
-    <supports-screens android:resizeable="true"
-        android:smallScreens="false"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:anyDensity="true" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
 </manifest>

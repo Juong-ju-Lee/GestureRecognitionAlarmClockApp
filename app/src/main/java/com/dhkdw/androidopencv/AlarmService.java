@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat;
 public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
     private boolean isRunning;
-    private MainActivity mainActivity;
 
     @Nullable
     @Override

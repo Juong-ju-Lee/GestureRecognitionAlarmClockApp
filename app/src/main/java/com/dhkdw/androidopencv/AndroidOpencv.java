@@ -3,8 +3,10 @@ package com.dhkdw.androidopencv;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase;
@@ -115,10 +120,6 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         }
     };
 
-    private PendingIntent pendingIntent;
-    private AlarmManager alarmManager;
-    private AlarmService alarmService;
-
     public AndroidOpencv() {
         mDetectorName = new String[2];
         mDetectorName[JAVA_DETECTOR] = "Java";
@@ -135,8 +136,40 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // 상태바 제거
+
+
+/*
+        int uiOptions = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+        boolean isImmersiveModeEnabled = ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
+        if (isImmersiveModeEnabled) {
+            Log.i(TAG, "Turning immersive mode mode off.");
+        } else {
+            Log.i(TAG, "Turning immersive mode mode on.");
+        }
+        newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+
+// 아이스크림 샌드위치(4.0) 이상일 경우
+        if (Build.VERSION.SDK_INT >= 14) {
+            newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        }
+// 젤리빈(4.1) 이상일 경우
+        if (Build.VERSION.SDK_INT >= 16) {
+            newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        }
+// 킷캣(4.4) 이상일 경우
+        if (Build.VERSION.SDK_INT >= 18) {
+            newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+
+*/
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // 화면 계속 켜짐
-        setContentView(R.layout.face_detect_surface_view);
+        setContentView(R.layout.face_detect_surface_view); // 화면 전환
         mOpenCvCameraView = findViewById(R.id.fd_activity_surface_view);
 
         // 볼륨조절
@@ -183,7 +216,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
-
+/*
     @Override
     protected void onStop() {
         super.onStop();
@@ -191,7 +224,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         //액티비티가 더 이상 화면에 나타나지 않음,중단된 상태
         finish();
     }
-
+*/
     @Override
     protected List<? extends CameraBridgeViewBase> getCameraViewList() {
         return Collections.singletonList(mOpenCvCameraView);
@@ -212,6 +245,7 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
         mRgba.release();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) { // 프레임 전달이 필요한 경우에 호출된다.
 
         mRgba = inputFrame.rgba();
@@ -249,12 +283,11 @@ public class AndroidOpencv extends CameraActivity implements CvCameraViewListene
             textView.setText("인식중..");
             result += 1;
             if (result >= 200) {
-                // mainActivity.stopA(); // 알람끄기 (error)
-                 mainActivity.f=true;
-               // Intent stop = new Intent(this, MainActivity.class);
-                //stop.putExtra("keyword", "true");
-              //  startActivity(stop);
-                onStop(); // 눈 인식 창 닫기
+                // mainActivity.stop(); // 알람끄기 (error)
+                Intent stop = new Intent(this, MainActivity.class);
+                stop.putExtra("알람끄기", true);
+                startActivity(stop);
+              //  onStop(); // 눈 인식 창 닫기
             }
 
         } else {

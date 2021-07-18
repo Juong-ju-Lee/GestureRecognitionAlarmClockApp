@@ -1,5 +1,6 @@
 package com.dhkdw.androidopencv;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
@@ -14,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +24,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    boolean f = false;
     private AudioManager audio;
     private Calendar calendar;
     private AlarmManager alarmManager;
@@ -49,15 +51,47 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC); // 볼륨 키를 누를 때 기본 값으로 미디어 음량으로 조절하게 한다.
         audio.setStreamVolume(AudioManager.STREAM_RING, audio.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE); // 음량을 최대로 설정
+
+
+
+        Intent stopIntent = getIntent();
+        boolean stopMessage = stopIntent.getBooleanExtra("알람끄기",false); // int의 경우 value에 default 값을 적어준다.
+        if (stopMessage){
+
+
+
+
+            // Receiver 설정
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            // state 값이 on 이면 알람시작, off 이면 중지
+            intent.putExtra("state", "on");
+            this.pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            stop();
+            // Toast.makeText(this, "test1" , Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-       // String getString = getIntent().getStringExtra("keyword");
-        if (f){
-            stopA();
+
+        Intent stopIntent = getIntent();
+        boolean stopMessage = stopIntent.getBooleanExtra("알람끄기",false); // int의 경우 value에 default 값을 적어준다.
+        if (stopMessage){
+
+            // Receiver 설정
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            // state 값이 on 이면 알람시작, off 이면 중지
+            intent.putExtra("state", "on");
+            this.pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                stop();
+            // Toast.makeText(this, "test2" , Toast.LENGTH_LONG).show();
         }
+
     }
 
     // 날짜표시
@@ -98,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     /* 알람 시작 */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startA() {
         // 알람 시간 설정
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -131,8 +166,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* 알람 중지 */
-    public void stopA() {
+    public void stop() {
         if (this.pendingIntent == null) {
+            //Toast.makeText(this, "알람중지 취소" , Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -140,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         this.alarmManager.cancel(this.pendingIntent);
 
         // 알람 중지 Broadcast
+        //Toast.makeText(this, "알람중지 브로드캐스트" , Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("state","off");
 
@@ -148,7 +185,10 @@ public class MainActivity extends AppCompatActivity {
         this.pendingIntent = null;
     }
 
+
     View.OnClickListener mClickListener = new View.OnClickListener() {
+        @SuppressLint("NonConstantResourceId")
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
