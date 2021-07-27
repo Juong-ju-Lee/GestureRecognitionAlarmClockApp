@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { // 레이아웃 생성, 초기화 컴포넌트를 불러온다.
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // activity_main.xml 파일을 불러온다.
 
@@ -93,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     // 날짜표시
     private void displayDate() {
